@@ -3,16 +3,15 @@
 # This won't be added again if you remove it.
 #Include ~/.orbstack/ssh/config
 
+# chmod 600 ~/.ssh/config
 
 # connection name
-Host github
-    Port 443
-    HostName github.com
-    User uyaox
-    IdentityFile ~/.ssh/git@github.com
+Host github.com
+    Port 22
+    User git
+    IdentityFile ~/.ssh/id.account@latop-m1.home.device
     AddKeysToAgent yes
     IdentitiesOnly yes
-
 Host *
     ServerAliveInterval 120
     ServerAliveCountMax 3
@@ -22,7 +21,7 @@ Host droplet
     User 
     Port 
     PreferredAuthentications publickey
-    IdentityFile ~/.ssh/id.root@backup.droplet
+    IdentityFile ~/.ssh/id.root@backup.droplet.digitocean
     AddKeysToAgent yes
     ProxyCommand nc -X 5 -x 127.0.0.1:6153 %h %p
     # ProxyJump socks5://127.0.0.1:6153
