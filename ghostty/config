@@ -1,1 +1,25 @@
-q:q
+# ghostty +list-themes
+theme = catppuccin-mocha
+
+
+
+# ghostty +list-keybinds
+keybind = ctrl+r=reload_config
+keybind = shift+alt+up=new_split:up
+keybind = shift+alt+down=new_split:down
+keybind = shift+alt+left=new_split:left
+keybind = shift+alt+right=new_split:right
+
+
+
+keybind = super+right_bracket=goto_split:next
+keybind = super+left_bracket=goto_split:previous
+
+
+
+
+keybind = super+t=new_tab
+keybind = alt+tab=next_tab
+keybind = alt+shift+tab=previous_tab
+
+# ghostty +list-fonts

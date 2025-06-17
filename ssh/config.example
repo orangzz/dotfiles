@@ -1,0 +1,36 @@
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# This won't be added again if you remove it.
+#Include ~/.orbstack/ssh/config
+
+
+# connection name
+Host github
+    Port 443
+    HostName github.com
+    User uyaox
+    IdentityFile ~/.ssh/git@github.com
+    AddKeysToAgent yes
+    IdentitiesOnly yes
+
+Host *
+    ServerAliveInterval 120
+    ServerAliveCountMax 3
+
+Host droplet
+    HostName 128.199.172.202
+    User 
+    Port 
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id.root@backup.droplet
+    AddKeysToAgent yes
+    ProxyCommand nc -X 5 -x 127.0.0.1:6153 %h %p
+    # ProxyJump socks5://127.0.0.1:6153
+
+Host volcengine
+    HostName 118.196.26.25
+    User root
+    Port 
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id.root@e-c1m1.ecs.volcengine
+    AddKeysToAgent yes
