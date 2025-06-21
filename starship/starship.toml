@@ -1,0 +1,76 @@
+
+add_newline = false
+# A minimal left prompt
+format = """$directory$character"""
+palette = "catppuccin_mocha"
+# move the rest of the prompt to the right
+right_format = """$all"""
+
+[character]
+success_symbol = "[✗](bold green)"
+error_symbol = "[✗](bold red)"
+vimcmd_symbol = "[󰘧](bold purple)"
+
+
+[directory]
+truncation_length = 3 
+read_only = " "
+
+[aws]
+format = '[$symbol(profile: "$profile" )(\(region: $region\) )]($style)'
+style = 'bold blue'
+symbol = " "
+disabled = true
+
+[docker_context]
+format = 'w/[$symbol$context]($style) '
+symbol = '🐋 '
+style = 'blue bold'
+detect_files = ['docker-compose.yml', 'docker-compose.yaml', 'Dockerfile']
+detect_folders = ['docker']
+
+
+[kubernetes]
+disabled = false
+detect_files = ['k8s']
+
+
+[git_branch]
+format =  '[$symbol$branch(:$remote_branch)]($style) '
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+[git_status]
+disabled = true
+
+[java]
+symbol = " "
+[nodejs]
+symbol = " "
+[python]
+symbol = " "
+[golang]
+symbol = " "
+detect_file =['go.mod']
+[rust]
+symbol = " "
+
+[lua]
+symbol = " "
+[dart]
+symbol = " "
+[package]
+symbol = " "
+
+[cmd_duration]
+disabled = true
+
+[os.symbols]
+Amazon = " "
+Arch = " "
+Debian = " "
+Ubuntu = " "
+Alpine = " "
+CentOS = " "
+Macos = " "
+Windows = " "
+Linux = " "
