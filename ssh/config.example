@@ -5,7 +5,9 @@
 
 # chmod 600 ~/.ssh/config
 
-# connection name
+
+# sshHost = 'github.com' or 'ssh.github.com'
+# https://help.github.com/articles/using-ssh-over-the-https-port
 Host github.com
     Port 22
     User git
