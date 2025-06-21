@@ -20,8 +20,8 @@ Host *
 
 Host droplet
     HostName 128.199.172.202
-    User 
-    Port 
+    User {ecs_user}
+    Port {custom_port}
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id.root@backup.droplet.digitocean
     AddKeysToAgent yes
@@ -30,8 +30,8 @@ Host droplet
 
 Host volcengine
     HostName 118.196.26.25
-    User root
-    Port 
+    User {ecs_user}
+    Port {custom_port} 
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id.root@e-c1m1.ecs.volcengine
     AddKeysToAgent yes
