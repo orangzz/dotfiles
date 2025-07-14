@@ -8,8 +8,8 @@ ln -s $DOTFILES/nvim $HOME/.config/nvim
 rm -rf $HOME/.config/ghostty
 ln -s $DOTFILES/ghostty $HOME/.config/ghostty
 
-rm -rf $HOME/.config/starship.toml
-ln -s $DOTFILES/starship/starship.toml $HOME/.config/starship.toml
+rm -rf $HOME/.config/starship
+ln -s $DOTFILES/starship $HOME/.config/starship
 
 
 rm -rf $HOME/.zshrc
