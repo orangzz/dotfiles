@@ -145,3 +145,17 @@ zsh_add_path "$BUN_INSTALL/bin"
 # The go install command installs binaries to $GOBIN, which defaults to $GOPATH/bin
 
 zsh_add_path "$GOBIN"
+
+
+
+#
+# GPG
+# workaround if not w32 systems
+# added to init/startup file is used on shell invocations
+# GPG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}/gnupg"
+GPG_TTY="$(tty)"
+export GPG_TTY
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi

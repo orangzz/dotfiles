@@ -1,9 +1,23 @@
+###############################################################################
+# See `man ssh_config` for the details of these options
+#
+# roam
+# across Wi-Fi network
+# from Wi-Fi to cell ir vuce versa
+#
 # Added by OrbStack: 'orb' SSH host for Linux machines
 # This only works if it's at the top of ssh_config (before any Host blocks).
 # This won't be added again if you remove it.
-#Include ~/.orbstack/ssh/config
-
+# Include ~/.orbstack/ssh/config
+#
 # chmod 600 ~/.ssh/config
+###############################################################################
+
+
+Host *
+    ServerAliveInterval 60
+    ConnectTimeout 10
+    AddKeysToAgent yes
 
 
 # sshHost = 'github.com' or 'ssh.github.com'
@@ -14,9 +28,7 @@ Host github.com
     IdentityFile ~/.ssh/id.account@latop-m1.home.device
     AddKeysToAgent yes
     IdentitiesOnly yes
-Host *
-    ServerAliveInterval 120
-    ServerAliveCountMax 3
+
 
 Host droplet
     HostName 128.199.172.202
@@ -31,7 +43,7 @@ Host droplet
 Host volcengine
     HostName 118.196.26.25
     User {ecs_user}
-    Port {custom_port} 
+    Port {custom_port}
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id.root@e-c1m1.ecs.volcengine
     AddKeysToAgent yes

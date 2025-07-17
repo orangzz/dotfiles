@@ -1,0 +1,18 @@
+set EDITOR zed
+set VISUAL zed
+set GIT_EDITOR "zed --wait"
+
+
+set LC_CTYPE "en_US.UTF-8"
+set LC_ALL "en_US"
+
+    "/usr/local/go/bin"
+    "$HOME/.local/bin"
+    "$HOME/.cargo/bin"
+
+        case ":$PATH:" in
+            *":$path:"*) : ;; # already exists - do nothing
+            *) export PATH="$path:$PATH" ;; # prepend to PATH
+        esac
+    fi
+done

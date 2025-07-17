@@ -107,7 +107,9 @@ alias gs="git status"
 
 # alias glpretty="git log --graph --oneline --all"
 alias gl="git log --graph --format='%C(yellow)%h%Creset - %s %Cgreen(%cr) %C(blue)%an %Creset'"
-alias glref="git log --pretty=reference --graph "
+alias gls="git log --show-signature --graph --format='%C(yellow)%h%Creset - %s %Cgreen(%cr) %C(blue)%an %C(magenta)%G? %Creset'"
+alias gdr="git commit --allow-empty --all"
+alias gc="git commit --signoff --message"
 alias gd="git diff --stat --patch"
 alias gane="git commit --amend --no-edit"
 ###############################################################################
