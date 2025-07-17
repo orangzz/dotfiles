@@ -1,0 +1,93 @@
+
+
+# bat file | pbcopy
+# bat file | xclip
+# bat file --plain
+
+
+
+# brew leaves
+# brew bundle add
+
+# `brew bundle add name […]`: Add entries to your Brewfile
+# `brew bundle remove name […]`: Remove entries that match name from your Brewfile
+
+# brew bundle dump --file=$DOTFILES/brewfile
+# brew bundle install --file=$DOTFILES/brewfile
+# remove a package, including all it's dependencies.`brew rm <formula> --deps`
+# cleanup installed package to match brewfile `brew bundle --force cleanup`
+
+
+###############################################################################
+# Core CLI Could Not Live Without                                             #
+###############################################################################
+
+# directory jump by path segement direct + frecency(frequency+recency)
+# Setup shell integration: `echo 'eval "$(zoxide init --cmd cd zsh)"' >> ~/.zshrc`
+brew "zoxide"
+brew "broot"
+
+
+# history search, directory search
+# Set up fzf key bindings and fuzzy completion `source <(fzf --zsh)`
+# nvim $(fzf -m --preview="bat --color=always {}")
+brew "fzf"
+# file exploer
+brew "yazi"
+
+
+
+brew "bat"
+# system monitor: disk, memory, netowork, process
+brew "btop"
+# disk tmpfs ext4
+brew "duf"
+# tree view
+brew "lsd"
+brew "ripgrep"
+brew "git"
+brew "diff-so-fancy"
+brew "lazygit"
+
+
+brew "starship"
+brew "neovim"
+brew "luarocks"
+# Arguing that you don't care about the right to privacy because you have nothing to hide is no different from saying you don't care about free speech because you have nothing to say. – Edward Snowden
+brew "gpg" # The GNU Privacy Guard(open library)
+
+# utils
+
+brew "hexyl" # hex viewer
+
+brew "cointop"
+brew "jq"
+brew "imagemagick"
+brew "ripgrep"
+brew "pulumi/tap/pulumi"
+
+# http
+brew "httpie"
+brew "hurl"
+brew "wget"
+brew "curl"
+ # yotubedownloader
+
+
+
+# network utils
+brew "doggo"
+brew "iproute2mac"
+
+# audio/video
+cask "obs"
+# window tiling manager for macos
+# hyperland,wayland compositor for unix
+cask "loop"
+cask "legcord"
+cask 'ghostty'
+cask "ngrok"
+cask "orbstack"
+cask "aerial"
+# app launcher
+cask "raycast"

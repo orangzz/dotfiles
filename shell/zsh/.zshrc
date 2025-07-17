@@ -9,6 +9,11 @@
 
 # `man zshexpn` - zsh expansion and substitution
 # alias expansion
+# paramater expansion
+# file="report"; echo "${file}_2024.pdf"  # report_2024.pdf
+# ${name:+word}    # Use word if name is set AND non-empty
+# ${name:-word}    # Use word if name is unset OR empty
+# ${name:=word}    # Set name to word if unset OR empty, then use it
 # command substitution `$(command)`
 # parameter subtituion `${parameter}` `man zshparam`
 # processs subtitution `<(process)`
@@ -122,9 +127,7 @@ if [[ -e "$HOME/.localrc" ]]; then
 fi
 
 
-# export GPG_TTY to work around a failure I don't really understand
-GPG_TTY="$(tty)"
-export GPG_TTY
+
 
 zprof
 

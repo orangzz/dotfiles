@@ -2,6 +2,8 @@ local lint = require("lint")
 
 lint.linters_by_ft = {
     lua = { "luacheck" },
+    markdown = { "markdownlint", "vale"},
+    yaml = {"yamllint"}
     -- haskell = { "hlint" },
     -- python = { "flake8" },
 }

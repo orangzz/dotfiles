@@ -1,0 +1,13 @@
+[core]
+	editor = nvim
+	whitespace = trailing-space,space-before-tab
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[pager]
+	diff = diff-so-fancy | less --tabs=4 -RFX
+	show = diff-so-fancy | less --tabs=4 -RFX
+[merge]
+  	conflictstyle = zdiff3
+[init]
+	defaultBranch = main
+[diff]
+	algorithm = histogram
