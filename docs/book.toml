@@ -1,9 +1,11 @@
 [book]
-authors = ["orangzz"]
+src = "src"
 language = "en"
 multilingual = true
-src = "src"
 title = "dotfiles"
+authors = ["orangzz"]
+
+
 
 [output.html]
 git-repository-url = "https://github.com/orangzz/dotfiles"

@@ -28,7 +28,8 @@ jobs:
             # curl  -sSL $url | tar -xz --directory=$HOME/.local/bin
             echo "$(pwd)/mdbook" >> $GITHUB_PATH
       - name: Build Book
-        run:  mdbook build docs --dest-dir docs/book
+        run: |
+           mdbook build docs --dest-dir book
       - name: Deploy site to Github Page
         run: |
           git worktree add gh-pages
@@ -37,7 +38,7 @@ jobs:
           cd gh-pages
           git update-ref -d refs/heads/gh-pages
           rm -rf *
-          mv ../docs/book/* .
+          mv ../docs/* .
           git add .
           git commit -m "deploy ${GITHUB_SHA} to gh-pages"
           git push --force --set-upstream origin gh-pages
