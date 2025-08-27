@@ -30,7 +30,7 @@ jobs:
       - name: Build Book
         run: |
            mdbook build docs --dest-dir book
-      - name: Deploy site to Github Page
+      - name: Upload artifact
         run: |
           git worktree add gh-pages
           git config --local user.name "github-actions[bot]"
@@ -42,6 +42,9 @@ jobs:
           git add .
           git commit -m "deploy ${GITHUB_SHA} to gh-pages"
           git push --force --set-upstream origin gh-pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
       # - name: Deploy site to Github Page
       #   uses: peaceiris/actions-gh-pages@v3
       #   with:
