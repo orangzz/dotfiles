@@ -1,0 +1,10 @@
+[book]
+authors = ["orangzz"]
+language = "en"
+multilingual = true
+src = "src"
+title = "dotfiles"
+
+[output.html]
+git-repository-url = "https://github.com/orangzz/dotfiles"
+edit-url-template = "https://github.com/orangzz/dotfiles/edit/main/{path}"
