@@ -1,0 +1,16 @@
+# scheduling one-off task can be accomplished via `at`
+# scheduling repetitive tasks run periodically at a fixed time, date, or interval.
+# cron experssion
+#  * * * * * <command to execute>
+# | | | | |
+# | | | | day of the week (0–6)
+# | | | month (1–12)
+# | | day of the month (1–31)
+# | hour (0–23)
+# minute (0–59)
+
+
+# `/etc/cron.allow` – If this file exists, it must contain the user's name for that user to be allowed to use cron jobs.
+# `/etc/cron.deny` - If the cron.allow file does not exist but the /etc/cron.deny file does exist then, to use cron jobs, users must not be listed in the /etc/cron.deny file.
+
+1 0 * * * printf "" > /var/log/apache/error_log

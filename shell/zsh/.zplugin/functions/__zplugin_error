@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+function __zplugin_error() {
+    printf  '%s\n' $* >&2
+}
+
+__zplugin_error $@

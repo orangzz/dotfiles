@@ -1,0 +1,7 @@
+zsh_zcompile() {
+  local ffile=$1
+  if [[ $ffile -nt $ffile.zwc  && -r $ffile && -w ${ffile:h}  ]]; then
+       zcompile $ffile
+  fi
+  zcompile $ffile
+}

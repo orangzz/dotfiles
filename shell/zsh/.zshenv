@@ -1,36 +1,24 @@
-
-
-
-##################################################################################
-# default program
-##################################################################################
-export EDITOR="nvim"
-export VISUAL="zed"
-export PAGER=less
-
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+# := if it's unset or null and then substitutes
+# xdg base dir spec compliance
+: XDG_CONFIG_HOME=${XDG_CONFIG_HOME:=$HOME/.config}
+: XDG_CACHE_HOME=${XDG_CACHE_HOME:=$HOME/.cache}
+: XDG_DATA_HOME=${XDG_DATA_HOME:=$HOME/.local/share}
+: XDG_STATE_HOME=${XDG_STATE_HOME:=$HOME/.local/state}
+#=== ZSH PREFIX ===
+ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
+export EDITOR=nvim VISUAL=nvim PAGER=less
 
-
-
-
-
-
-
-# xdg base dir spec compliance if not using install base dir
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-
+# gtk
 #export TERM='rxvt-256color'
 #export TERM='xterm-256color'
-export DOTFILES="$HOME/dotfiles"
+DOTFILES=$HOME/dotfiles
 
 
-export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-export XPROFILE="$XDG_CONFIG_HOME/x11/xprofile"
+XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
+XPROFILE="$XDG_CONFIG_HOME/x11/xprofile"
 
 
 

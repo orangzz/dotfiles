@@ -1,3 +1,6 @@
+# split config into that which is checked into source control and that which is not;
 .DS_Store
 wallpaper/
-
+editor/vscode/extensions
+git/user.local
+node_modules

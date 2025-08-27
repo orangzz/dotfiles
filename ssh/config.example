@@ -1,23 +1,16 @@
-###############################################################################
-# See `man ssh_config` for the details of these options
-#
 # roam
 # across Wi-Fi network
-# from Wi-Fi to cell ir vuce versa
-#
-# Added by OrbStack: 'orb' SSH host for Linux machines
-# This only works if it's at the top of ssh_config (before any Host blocks).
-# This won't be added again if you remove it.
-# Include ~/.orbstack/ssh/config
-#
+# from Wi-Fi to cell ir vice versa
 # chmod 600 ~/.ssh/config
-###############################################################################
-
 
 Host *
-    ServerAliveInterval 60
     ConnectTimeout 10
-    AddKeysToAgent yes
+    ServerAliveInterval 120
+    ServerAliveCountMax 2
+    SetEnv TERM=xterm-256color
+    addKeysToAgent yes
+    UseKeychain yes
+
 
 
 # sshHost = 'github.com' or 'ssh.github.com'
@@ -25,9 +18,10 @@ Host *
 Host github.com
     Port 22
     User git
-    IdentityFile ~/.ssh/id.account@latop-m1.home.device
+    IdentityFile ~/.ssh/id.account@github
     AddKeysToAgent yes
     IdentitiesOnly yes
+    ProxyCommand nc -X 5 -x 127.0.0.1:6153 %h %p
 
 
 Host droplet

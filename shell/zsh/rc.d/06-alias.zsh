@@ -12,7 +12,6 @@ alias path="print -l $path"
 alias manpath="print -l $manpath"
 
 # modern aleternative
-
 if command -v bat &> /dev/null; then
   alias cat="bat --plain --theme zenburn"
   alias bcat="bat --theme zenburn"
@@ -26,9 +25,14 @@ alias grep="rg"
 # `--RAW-CONTROL-CHARS`  allows ANSI "color" escape sequences to be output in their raw form. This means that if the input contains color codes (like from `ls --color`), they will be interpreted by the terminal and the output will be colored.
 # `--no-init` prevent the clear the output on the screen after you exit `less`.
 # alias ls='lsd -la | less -FRX'
-alias ls="lsd -la"
-alias tree="lsd -la --tree --color=always --icon=always | less -FRX"
-
+if [[ -n $SSH_CONNECTION ]]; then
+     export DISPLAY=:0
+    alias ls="lsd --group-dirs=first"
+  else
+    alias ls="lsd --group-dirs=first"
+fi
+alias tree="lsd -la --tree"
+# copy and move with progress bar and confirm
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
@@ -66,7 +70,7 @@ alias pscpus='ps auxf | sort -nr -k 3 | head -5'
 # power off, halt
 alias shutdown="sudo shutdown -p now"
 alias reboot="sudo shutdown -r now"
-alias flushdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
+alias flusdns="dscacheutil -flushcache && sudo killall -HUP mDNSResponder"
 
 
 
@@ -96,22 +100,33 @@ case "$(uname -s)" in
 esac
 
 
-###############################################################################
+#########################################################################
 # Git
-###############################################################################
+#########################################################################
 
 
 alias lg="lazygit"
 alias gs="git status"
 
 
-# alias glpretty="git log --graph --oneline --all"
-alias gl="git log --graph --format='%C(yellow)%h%Creset - %s %Cgreen(%cr) %C(blue)%an %Creset'"
-alias gls="git log --show-signature --graph --format='%C(yellow)%h%Creset - %s %Cgreen(%cr) %C(blue)%an %C(magenta)%G? %Creset'"
-alias gdr="git commit --allow-empty --all"
+#%h  -- abbreviated commit hash
+#%D  -- ref names
+#%cr  -- relative commit date
+#%an  -- author name
+alias gl="git log --graph  --format='%C(yellow)%h%Creset - %s %Cgreen(%cr) %C(blue)%an %Creset'"
+alias glp="git log  --graph --all \
+--format='%C(yellow)%h  %C(magenta)%an%Creset - %C(white)%cr %C(auto)%d %C(reset)%n%s%n'"
+alias gce="git commit --allow-empty --all"
 alias gc="git commit --signoff --message"
-alias gd="git diff --stat --patch"
-alias gane="git commit --amend --no-edit"
+alias gcl="git clone"
+alias gcm="git commit --amend --signoff --no-edit"
+alias gd="git diff --stat --patch "
+# Get previous release tags
+alias gtr="git ls-remote --tags --ref --sort='v:refname'"
+
+
+
+
 ###############################################################################
 # Navigating the Direcotry tree
 # broot
@@ -127,3 +142,8 @@ setopt AUTO_CD
 alias ..="cd .."
 alias ...="cd .. && cd .."
 alias ....="cd .. && cd .. && cd .."
+
+
+
+alias heic="magick mogrify -monitor -format jpg *.heic"
+

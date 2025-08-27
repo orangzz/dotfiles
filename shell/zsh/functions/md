@@ -1,0 +1,8 @@
+function md() {
+  [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1"
+}
+(( ${+functions[compdef]} ))  && compdef _directories md
+
+command function "${@}"
+unset -f
+

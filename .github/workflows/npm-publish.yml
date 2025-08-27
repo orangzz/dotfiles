@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+# defaults:
+#   run:
+#     working-directory: ./docs
+
+env:
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN}}
+  # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+jobs:
+  npm-publish:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os}}
+    steps:
+      - uses: actions/checkout
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.tool-versions'
+          cache: 'pnpm'
+      - name: Publish to npm
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN}}

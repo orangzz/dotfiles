@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+# Bail out when zsh/system is not available
+# Bail out when zsh/system is not available
+zmodload zsh/system || {
+    __zplugin_err 'Could not load `zsh/system` which is needed for autoupdate. Please create an issue.'
+    return 1
+}
+
+##? zsh-plugin-load - load plugins without a fancy plugin manager
+##?

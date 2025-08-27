@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+function __zplugin_out() {
+    printf '-- zplugin: %s\n' $* >&2
+}
+
+__zplugin_out $@
