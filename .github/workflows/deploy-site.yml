@@ -32,6 +32,16 @@ jobs:
       - name: Build Book
         run: |
            mdbook build docs --dest-dir book
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/book
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
       # - name: Upload artifact
       #   run: |
       #     git worktree add gh-pages
@@ -48,10 +58,10 @@ jobs:
       #   uses: actions/upload-pages-artifact@v3
       #   with:
       #     path: ./docs/book
-      - name: Deploy site to Github Page
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/book
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+      # - name: Deploy site to Github Page
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./docs/book
+      #     user_name: 'github-actions[bot]'
+      #     user_email: 'github-actions[bot]@users.noreply.github.com'
