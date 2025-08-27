@@ -1,0 +1,59 @@
+on:
+  push:
+    branches: [$default-branch]
+    paths: ['/docs/**', 'README.md', '.github/workflows/deploy-site.yml']
+  pull_request:
+
+jobs:
+  deploy-site:
+    name: Build and deploy site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+      - name: Prepare docs
+        run: |
+          cp README.md docs/README.md
+      - name: Install mdbook
+        run: |
+           tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
+           url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
+             #  url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-aarch64-apple-darwin.tar.gz"
+           mkdir mdbook
+           curl -sSL $url | tar -xz --directory=./mdbook
+            # curl  -sSL $url | tar -xz --directory=$HOME/.local/bin
+            echo "$(pwd)/mdbook" >> $GITHUB_PATH
+      - name: Build Book
+        run: |
+           mdbook build docs --dest-dir book
+      - name: Upload artifact
+        run: |
+          git worktree add gh-pages
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          cd gh-pages
+          git update-ref -d refs/heads/gh-pages
+          rm -rf *
+          mv ../docs/* .
+          git add .
+          git commit -m "deploy ${GITHUB_SHA} to gh-pages"
+          git push --force --set-upstream origin gh-pages
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: ./docs/book
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      # - name: Deploy site to Github Page
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./book
+      #     user_name: 'github-actions[bot]'
+      #     user_email: 'github-actions[bot]@users.noreply.github.com'

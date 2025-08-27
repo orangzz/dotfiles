@@ -1,0 +1,42 @@
+name: Tag Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+# defaults:
+#   run:
+#     working-directory: ./docs
+
+
+
+jobs:
+  create-gh-release:
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract tag name
+        id: extract_tag
+        run: echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+    # - run: npx semantic-release
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release for Tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+              const tagName = "${{ steps.extract_tag.outputs.tag_name }}"
+              await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: tagName,
+                generate_release_notes: true,
+                draft: true,
+              })
+
