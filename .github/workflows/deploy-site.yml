@@ -20,7 +20,6 @@ jobs:
           cp ./README.md ./docs/README.md
       - name: Install mdbook
         run: |
-          apt
            tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
            url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
            mkdir mdbook
