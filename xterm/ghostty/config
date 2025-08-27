@@ -6,19 +6,11 @@
 # TERMINFO=/Applications/Ghostty.app/Contents/Resources/terminfo
 
 # Change the Prefers login shell of the current user
-# `sudo sh -c 'echo /usr/local/bin/fish >> /etc/shells'` or `echo /usr/local/bin/zsh | sudo tee -a /etc/shells > /dev/null`
+# `sudo sh -c 'echo /usr/local/bin/fish >> /etc/shells'`
+#  `echo /usr/local/bin/zsh | sudo tee -a /etc/shells > /dev/null`
 #  `chsh -s /usr/local/bin/fish`
 
 
-
-
-# echo SHELL=$(dscl . -read /Users/"$(whoami)" | grep -E '^UserShell:' | awk '{ print $2 }')
-
-
-
-# load shell init/rc config file when launched
-# /bin/sh -c -
-# run prepend as shell argument
 # open -a /Applications/Ghostty.app ./start.command
 # if [[ $TERM_PROGRAM == "ghostty" ]]; then
 #   if [[ $SHELL =~ "/zsh" ]]; then
@@ -35,44 +27,40 @@
 # should be beam/bar in viins mode
 # should be block in vicmd mode
 
+# shell-integration-features = no-cursor
+
 
 ###############################################################################
 # command = /usr/local/bin/fish --login --interactive
-# command = /bin/zsh
 # shell-integration-features = no-title
 # shell-inegration = fish
 
 ###############################################################################
 # Themes
-# `ghostty +list-themes`
+# list available themes - `ghostty +list-themes`
+# `themes` subdirectory of your Ghostty configuration directory
+# search directory `${XDG_CONFIG_DIR;-$HOME}/ghostty/themes` to discover themes
+# Ghostty resources directory
+# `Ghostty.app/Contents/Resources/ghostty/themes` on macos
+# `share/ghostty/themes` on linux
 ###############################################################################
-theme = catppuccin-mocha
-background-opacity = 0.8
-
-
-
-
-
-
-
+# theme = catppuccin-mocha
+# theme = aura
+theme = tokyonight-storm
+# background-opacity = 0.95
 ###############################################################################
 # Keybindings
-# Tabs + Panels
+# Tabs,  Panels and windows
 # ghostty +list-keybinds
 ###############################################################################
-
-
-
-
-
-
-
-
-
 keybind = super+shift+,=reload_config
 keybind = shift+alt+up=adjust_selection:up
 
-
+# navigating window
+# go to next
+# go to previous
+# go to first ``
+# go to last
 
 
 keybind = alt+h=goto_split:left
@@ -80,9 +68,9 @@ keybind = alt+l=goto_split:right
 keybind = alt+j=goto_split:up
 keybind = alt+k=goto_split:down
 
+# split window side by side
 keybind = alt+v=new_split:right
 keybind = alt+s=new_split:down
-
 keybind = f11=toggle_fullscreen
 keybind = ctrl+w=close_window
 
@@ -103,21 +91,40 @@ keybind = shift+up=adjust_selection:up
 
 
 ###############################################################################
-# Fonts
+## Fonts
 # `ghostty +list-fonts`
+# defaults font is `JetBrainsMono Nerd Font`
+#
+# check which font a symbol comes from
+# `ghostty +show-face --string="X"`
+#
+# The struggle was never installing the font it was finding the name that a terminal would accept
+# `fc-list | grep`
+#
+# candidate fonts should
+# support nerd font: echo -e "\uf015 \uf07c \uf121 \uf126"
+# has obvious distincation between `o0 1lI`
+# support opentype feature
 ###############################################################################
 
+font-family = Recursive Mono Casual Static
+# font-family = DankMono Nerd Font
+font-style = semibold
+font-size = 18
 
 
-
-###############################################################################
-# Title Bar
-###############################################################################
+####################################################
+# User Interface
+###################################################
 title = 👻
-# macos-titlebar-style = transparent
-macos-non-native-fullscreen = true
 macos-titlebar-style = tabs
-window-save-state = never
+macos-non-native-fullscreen = visible-menu
+adjust-cell-height = 35%
+window-padding-x = 8
+window-padding-y = 8
+# macos-titlebar-style = transparent
+# macos-non-native-fullscreen = true
+# window-save-state = never
 # macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 confirm-close-surface = false

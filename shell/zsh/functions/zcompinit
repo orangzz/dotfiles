@@ -1,0 +1,26 @@
+local ZCOMPDUMP_PATH=${ZI[ZCOMPDUMP_PATH]:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump}
+
+# full compinit per day
+if [[ -e $ZCOMPDUMP_PATH && -f $ZCOMPDUMP_PATH(#qNmh+24) ]]; then
+    # compinit will create the dump file if there isn't one already
+    # use option `-u` to make all files found used without asking
+    compinit -i -d "$ZCOMPDUMP_PATH"
+else
+    # ignore all insecure files and directories use the option `-i`
+    # compaudit not owned by root or current user
+    # group or world writable directory
+    # skips the compaudit
+    compinit -C -d "$ZCOMPDUMP_PATH"
+fi
+ # rm -f "$ZCOMPDUMP_PATH*"
+
+# Compile the completion dump to boost startup speed. Run in background.
+{
+    # if zcompdump file exists, and we don't have a compiled version
+    # or if dump file is newer than the compiled file
+    if [[ -s $ZCOMPDUMP_PATH && (! -s ${ZCOMPDUMP_PATH}.zwc || $ZCOMPDUMP_PATH -nt ${ZCOMPDUMP_PATH}.zwc) ]]; then
+        [[ -e $ZCOMPDUMP_PATH.zwc ]] && mv -f "$ZCOMPDUMP_PATH.zwc" "$ZCOMPDUMP_PATH.zwc.old"
+        zcompile -M $ZCOMPDUMP_PATH && command rm -f $ZCOMPDUMP_PATH.zwc.old
+    fi
+} &!
+

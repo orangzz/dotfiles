@@ -1,0 +1,35 @@
+#!/usr/bin/env zsh
+
+#compdef zap
+
+local -a subcmds=(
+	"clean:Remove unused plugins"
+	"help:Show help informations"
+	"list:List plugins"
+	"upgrade:Update plugins"
+	"version:Show version information"
+)
+_describe 'zap' subcmds
+
+# Set all options
+source "$ZGEN_SOURCE/options.zsh"
+
+
+# dispatch flight control
+function __zplugin() {
+    local cmd="$1"
+    if [[ -z "$cmd" || $cmd = '--help' ]]; then
+        zplugin-help
+        return 1
+    fi
+    if functions zplugin-$cmd &> /dev/null ; then
+        shift
+        zplugin-$cmd $@
+    else
+        __zplugin_err "Command not found: $cmd"
+        zplugin-help
+        return 1
+    fi
+}
+
+__zplugin $@

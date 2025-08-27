@@ -1,42 +1,27 @@
-###############################################################################
-# The Order and Condition are sourced
-# organzied shell config, consider performance
-
-# restart shell:
-# - Open a new tab or window in your terminal.
-# - Replace the current shell with a new one: `exec zsh`
-# reload config `source $ZDOTDIR/.zshrc`
-
-# `man zshexpn` - zsh expansion and substitution
-# alias expansion
-# paramater expansion
-# file="report"; echo "${file}_2024.pdf"  # report_2024.pdf
-# ${name:+word}    # Use word if name is set AND non-empty
-# ${name:-word}    # Use word if name is unset OR empty
-# ${name:=word}    # Set name to word if unset OR empty, then use it
-# command substitution `$(command)`
-# parameter subtituion `${parameter}` `man zshparam`
-# processs subtitution `<(process)`
-# `man zshall`
-# `man zshbuiltins` autoload emulate
-#  eval: Execute arguments as a shell command.
-# `man param`
-# `man zshoptions`
-# `man zshzle`
-###############################################################################
+# measures user-visible latency of interactive zsh:
+# create_tty_ms=
+# prompt_first_display_ms=
+# command_lag_ms=
+# input_lag_ms=
+# just execute 'ZSH_PROFILE_RC=1 zsh' and run 'zprof' to get the details
+[[ ${ZSH_PROFILE_RC:-0} -eq 0 ]] || zmodload zsh/zprof
+alias zprofrc="ZSH_PROFILE_RC=1 zsh"
+# alias zbench='for i in $(seq 1 10); do; /usr/bin/time zsh -i -c exit; done'
 
 
-# startup time profiling and benchmark
+# found in `/etc/zsh/zshrc`
+# Useful support for interacting with Terminal.app or other terminal programs
+# [ -r "/etc/zshrc_$TERM_PROGRAM" ] && . "/etc/zshrc_$TERM_PROGRAM"
 
-zmodload zsh/zprof
+# found in  `/etc/zshrc_$TERM_PROGRAM`( `/etc/zshrc_Apple_Terminal`)
+# ghostty will create this file if  turn on shell-integration
+    # Set up the session directory/file.
+    # SHELL_SESSION_DIR="${ZDOTDIR:-$HOME}/.zsh_sessions"
+    # SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
+    # mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
-
-
-
-
-
-# zsh syntax hightlighting
-# shell fonts
+SHELL_SESSION_DIR=$XDG_STATE_HOME/zsh/.zsh_sessions
+SHELL_SESSION_FILE=$SHELL_SESSION_DIR/$TERM_SESSION_ID.session
 
 
 
@@ -49,87 +34,61 @@ export http2_proxy=http://127.0.0.1:6152;
 export no_proxy=localhost,127.0.0.1;
 
 
-# feedback for config reload
-# neofetch --backend off
-# figlet -f standard "Bump!"
 
+# ZFUNCTION=
 
+# fpath=($ZDOTDIR/completions $fpath)
 
-#################################################################################
-# subcommands options suggestion
-#################################################################################
+# autoload -U $ZFUNCTION/*(:t)
 
-zsh_add_file "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-####################################################################################
-# Completion
-####################################################################################
-
-[[ -s $ZDOTDIR/.zcomp.zsh ]] && source $ZDOTDIR/.zcomp.zsh
-
-
-####################################################################################
-# Syntax Hightlight                                                                #
 # see https://github.com/zsh-users/zsh-syntax-highlighting/tree/feature/redrawhook #
-####################################################################################
-
-###############################################################################
-# Options
-# set -o | less
-###############################################################################
-
-setopt autocd
-setopt appendhistory
-setopt sharehistory
-setopt HIST_SAVE_NO_DUPS
 
 
 
 
-###############################################################################
-# Line EDITOR
-# zle -al
-###############################################################################
-
-[[ -e ./zlerc.zsh ]] && source './zlerc.zsh'
-
-
-###############################################################################
-# Plugins & Integrations
-# Terminal status bar
-###############################################################################
+# Plugin Integrations
+# zsh_add_file "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # directory jump
 eval "$(zoxide init --cmd cd zsh)"
+
+FZF_DEFAULT_OPTS="
+--border
+--height 80%
+--extended
+--ansi
+--reverse
+--cycle
+--bind ctrl-s:toggle-sort
+--bind 'alt-e:execute($EDITOR {} >/dev/tty </dev/tty)'
+--preview \"(bat --color=always {} || ls -l --color=always {}) 2>/dev/null | head -200\"
+--preview-window right:60%
+"
+FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git 2>/dev/null"
 
 source <(fzf --zsh)
 
 
 
 
+# autoload -Uz add-zsh-hook
 
-###############################################################################
-# Scripts
-###############################################################################
+# function add_execute_permission {
+#   # Loop through all files in the $DOTFILES/scripts directory that are newly created
+#   find $DOTFILES/scripts -type f -exec chmod +x {} \;
+# }
 
-autoload -Uz add-zsh-hook
 
-function add_execute_permission {
-  # Loop through all files in the $DOTFILES/scripts directory that are newly created
-  find $DOTFILES/scripts -type f -exec chmod +x {} \;
-}
 
-add-zsh-hook chpwd add_execute_permission
-# add-zsh-hook precmd vcs_info
 
-# Local config
-if [[ -e "$HOME/.localrc" ]]; then
-    source "$HOME/.localrc"
+if [[ -e "$HOME/.zshrc.local" ]]; then
+    source "$HOME/.zshrc.local"
 fi
 
 
 
 
-zprof
+
 
 
 () {
@@ -147,3 +106,29 @@ zprof
     . $file   # `.` is like `source`, but doesn't search your $path.
   done
 } "$@"
+ 
+
+##? plugin-load - load plugins without a fancy plugin manager
+##?
+##? usage: plugin-load [-h|--help]
+##?        plugin-load [-n|--no-source] [-d|--defer] [-f|--fpath] [-p|--path]
+##?        [-u|--use-dir <plugin-subdir>] [<repo...>]
+
+ZPLUGIN_DIR=$HOME/.zplugin
+[ -f $ZPLUGIN_DIR/zplugin.zsh ] || git -C ${ZPLUGIN_DIR:h} clone https://github.com/orangzz/zplugin.git $ZPLUGIN_DIR
+source $ZPLUGIN_DIR/zplugin.zsh
+
+zplugin load zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-syntax-highlighting \
+    zsh-users/zsh-history-substring-search \
+    zsh-users/zsh-history-substring-search \
+    zsh-users/zsh-surround
+
+[[ "$PWD" != "/" ]] || cd
+
+# done profiling
+[[ ${ZSH_PROFILE_RC:-0} -eq 0 ]] || { unset ZSH_PROFILE_RC && zprof }
+
+
+
+

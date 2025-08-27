@@ -1,0 +1,3 @@
+- Please use the reaction to show that you are affected by the same issue.
+- Please don't comment if you have no relevant information to add. It's just extra noise for everyone subscribed to this issue.
+- Subscribe to receive notifications on status change and new comments.

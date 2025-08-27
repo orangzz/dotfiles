@@ -3,6 +3,7 @@ name: Tag Release
 on:
   push:
     tags: ['v*.*.*']
+  workflow_dispatch:
 # defaults:
 #   run:
 #     working-directory: ./docs

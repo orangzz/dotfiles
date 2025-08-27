@@ -1,0 +1,32 @@
+name: Build and Push Image
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+env:
+  acr_registry:
+  aws_registry:
+  dockerhub: docker.io
+  ghcr_registry: ghcr.io
+  # ghcr_registry_username: ${{ env.GHCR_USERNAME }}
+  # ghcr_registry_token: ${{ secrets.GHCR_TOKEN }}
+
+jos:
+  build:
+  strategy:
+    matrix:
+      os: [ubuntu-latest]
+  runs-on: ${{ matrix.os }}
+  steps:
+    - name: Checkout codebase
+      uses: actions/checkout@v4
+    - name: Login to ghcr.io
+      uses: redhat-actions/podman-login@v2
+      with:
+        username: ${{ env.GHCR_USERNAME }}
+        password: ${{ secrets.GHCR_TOKEN }}
+        registry: ${{ env.ghcr_registry }}
+    #  - name: Login to ghcr.io
+    #   run: |
+    #     echo ${{ secrets.ghcr_token }} | docker login -u ${{ env.ghcr_username}} --password-stdin ${{ env.ghcr_registry }}

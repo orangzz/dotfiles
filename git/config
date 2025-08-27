@@ -1,0 +1,68 @@
+[core]
+	editor = nvim
+	whitespace = trailing-space,space-before-tab
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	excludesfile = $HOME/.config/git/.gitignore
+	autocrlf = true
+[color "decorate"]
+  HEAD = red
+  branch = blue
+  tag = yellow
+  remoteBranch = magenta
+[pager]
+	diff = diff-so-fancy | less --tabs=4 -RFX
+	show = diff-so-fancy | less --tabs=4 -RFX
+[interactive]
+  diffFilter = diff-so-fancy --patch
+  singlekey = true
+[push]
+	followTags = true
+  default = current
+[pull]
+  default = current
+	ff = only
+  rebase = true
+[init]
+	defaultBranch = main
+[diff]
+	algorithm = histogram
+[status]
+  branch = true
+  showStash = true
+  showUntrackedFiles = all
+[commit]
+    gpgsign = true
+[tag]
+    gpgsign = true
+    sort = -committerdate
+[branch]
+[merge]
+	keepBackup = false
+	prompt = false
+	conflictstyle = zdiff3
+	tool = code
+[rebase]
+  autoStash = true
+[mergetool "code"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+[mergetool "nvimdiff"]
+	cmd = nvim -d $MERGED $LOCAL $REMOTE
+e
+[push]
+	followTags = true
+[gpg]
+  program = /usr/local/bin/gpg
+	format = openpgp
+[includeIf "gitdir:$HOME/repos/"]
+	path = $HOME/.config/git/.gitconfig.orangzz
+[includeIf "gitdir:$HOME/team/ransomnia/"]
+	path = $HOME/.config/git/.gitconfig.ransomnia
+
+
+# git config --global url."https://github".insteadOf git://github
+[url "git@github.com:orangzz/"]
+  insteadof = "og:"
+
+# gcl gh:vitejs/vite
+[url "git@github.com:"]
+  insteadof = "gh:"

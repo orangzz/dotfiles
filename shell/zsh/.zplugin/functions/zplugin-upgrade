@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+DEFAULT_BRANCH="main"
+
+function zplugin-update() {
+  CURRENT_BRANCH=$(git branch --show-current)
+}

@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+
+##? zplugin load  - load plugins without a fancy plugin manager
+##?
+##? usage: zplugin load [-h|--help]
+##?        zplugin load [-n|--no-source] [-d|--defer] [-f|--fpath] [-p|--path]  [-u|--use-dir <plugin-subdir>] [<repo...>]
+
+
+
+function __zplugin_load(){
+  setopt localoptions extendedglob
+  opterr() { echo >&2 "Unknown option '$1'" }
+  while (( $# )); do
+        case $1 in
+          --)                shift; repos+=("$@"); break   ;;
+          -h|--help)         zplugin-help && return        ;;
+          -d|--defer)        flag_defer=1;                 ;;
+          -u|--use-dir)      shift; use_dir=$1             ;;
+          -u=*|--use-dir=*)  use_dir="${1#*=}"             ;;
+          -*)                opterr $1 && return 2         ;;
+          *)                 repos+=("$@"); break          ;;
+        esac
+      shift
+    done
+    for repo in $repos; do
+
+    done
+}
+
+
+_zplugin_load() {
+    local repo=$1 git_ref=$2
+    local plugin_name plugin_dir initfile initfiles
+    plugin_name=${repo:t}
+    plugin_dir=${use_dir:-$ZPLUGIN_DIR}/$plugin_name
+    initfile=$plugin_dir/$plugin_name.plugin.zsh
+    if [[ ! -d $plugin_dir ]] && [[ "$repo" = */* ]]; then
+        __zplugin_out "Cloning $repo..."
+        git clone --quiet --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+        if [[ ! -e $initfile ]]; then
+           initfiles=(
+              $plugin_dir/*.{plugin.,}{z,}sh{-theme,}(N)
+            )
+          (( ${#initfiles} )) || {  __zplugin_out "Plugin load error: \"${repo}\" is not a valid plugin" && return 1 }
+          ln -sf ${initfiles[1]} $initfile
+        fi
+      fi
+      if [[ -d ${plugin_dir}/functions ]]; then
+          fpath=(${plugin_dir}/functions $fpath)
+      else
+          fpath=(${plugin_dir} $fpath)
+      fi
+      if [[ -d ${plugin_dir}/bin ]]; then
+          path=(${plugin_dir}/bin $path[@])
+      fi
+      if (( ${1} && $+functions[zsh-defer] )); then
+          zsh-defer -dmpr -c "ZERO=${initfile} . ${initfile}"
+      else
+          ZERO=${initfile} . ${initfile}
+      fi
+}
+
+
+__zplugin_load $@

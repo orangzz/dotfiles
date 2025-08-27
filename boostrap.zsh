@@ -1,40 +1,100 @@
 #!/usr/bin/env zsh
 
-platform=$(command uname -sm)
-platform=$(printf '%s' "$platform" | command tr '[A-Z]' '[a-z]')
+[[ -n $HOME/.hushlogin ]] && touch $HOME/.hushlogin
 
-case "$platform" in
-  'darwin arm64');;
-  'darwin x86_64');;
-  'linux aarch64');;
-  'linux x86_64');;
-  *)
-    >&2 'printf' '\033[33mz4h\033[0m: sorry, unsupported platform: \033[31m%s\033[0m\n' "$platform"
-    'exit' '1'
-  ;;
-esac
+# fonts
+# terminal
+
+#
 
 
-DOTFILES="${DOTFILES:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
+info() {
+  printf "\033[36m$*\033[0m\n"
+}
 
-function init_homebrew() {
+warn() {
+  printf "\033[33m$*\033[0m\n"
+}
 
-    # install from release
-    # install from main branch
-    if [[ $(which brew) ]];  then
-      commnad bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+error() {
+  printf "\033[31merror\033[0m: $*\n" >&2
+}
 
-      # post-homebrew install
-      # echo 'eval "$(brew shellenv)"' >> $HOME/.zprofile
-    fi
-
+fatal() {
+  error "$@"
+  exit 1
 }
 
 
 
 
+function discover_platform() {
+
+  local platform=$(uname)/$(uname -m)
+  # platform=$(printf '%s' "$platform" | command tr '[A-Z]' '[a-z]')
+  platform=$(printf '%s' "$platform" | command tr '[:upper:]' '[:lower:]')
+
+  case "$platform" in
+    'darwin/arm64');;
+    'darwin/x86_64');;
+    'linux/aarch64');;
+    'linux/x86_64');;
+    *)
+      fatal "Unsupported platform: $platform"
+    ;;
+  esac
+  echo $platform
+}
 
 
+function fs-watcher-clean() {
+   if [[ "$OSTYPE" == "darwin"* ]]; then
+        sudo sysctl -w kern.maxfiles=524288
+        sudo sysctl -w kern.maxfilesperproc=524288
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sudo sysctl -n -w fs.inotify.max_queued_events=524288
+        sudo sysctl -n -w fs.inotify.max_user_instances=512
+        sudo sysctl -n -w fs.inotify.max_user_watches=524288
+    fi
+}
+
+
+
+function init_homebrew() {
+
+    # install from release
+    # install from main branch
+    if [[ -z $commands[brew] ]];  then
+       bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+      # post-homebrew install
+      # echo 'eval "$(brew shellenv)"' >> $HOME/.zprofile
+      chmod +x $DOTFILES/homebrew/run-brewfile.zsh && $XDG_CONFIG_HOME/homebrew/run-brewfile.zsh
+    fi
+
+}
+
+
+function init_nix() {
+
+  # create initial configuration in current directory and activate it
+}
+
+
+profile() {
+  SHELL_PATH=${SHELL:-"/bin/sh"}
+
+  case $SHELL_PATH in
+    */zsh)
+      PROFILE=${ZDOTDIR:-$HOME}/.zshrc ;;
+    */bash)
+      PROFILE=${BASHRC:-$HOME}/.bashrc ;;
+    */fish)
+      PROFILE=${FISH_CONFIG_DIR:-$HOME/.config/fish}/config.fish ;;
+  esac
+
+  info "Configuring path variable in ~${PROFILE#$HOME}..."
+}
 
 
 

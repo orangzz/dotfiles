@@ -1,0 +1,30 @@
+
+typeset -A ZPLUGIN
+ZPLUGIN_HOME=$HOME/.zplugin
+ZPLUGIN[HOME_DIR]=$ZPLUGIN_HOME
+ZPLUGIN[BIN_DIR]=$ZPLUGIN_HOME/bin
+
+
+# compaudit
+# files owned by root not by the current user
+# group or world writable directory
+# -w
+compaudit | xargs chown -R "$(whoami)" "$ZI[HOME_DIR]"
+compaudit | xargs chmod -R go-w "$ZI[HOME_DIR]"
+
+# if initfile not found
+[ ! -f $ZPLUGIN_HOME/.zplugin.zsh ] || {
+  # git -C ${ZPLUGIN_HOME:h} clone --depth 1 https://github.com/orangzz/zplugin.git
+  command git clone --depth 1 https://github.com/orangzz/zplugin.git $ZPLUGIN_HOME[bin]
+}
+source $ZPLUGIN_HOME/zplugin.zsh
+
+zplugin load zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-syntax-highlighting \
+    zsh-users/zsh-history-substring-search \
+
+# Load  completion function
+autoload -Uz _zplugin
+# bind completion functions to commands
+(( ${+_comps} )) && _comps[zi]=_zplugin
+# compdef _zplugin zplugin
