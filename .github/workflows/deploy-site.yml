@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -30,22 +31,22 @@ jobs:
       - name: Build Book
         run: |
            mdbook build docs --dest-dir book
-      # - name: Upload artifact
-      #   run: |
-      #     git worktree add gh-pages
-      #     git config --local user.name "github-actions[bot]"
-      #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
-      #     cd gh-pages
-      #     git update-ref -d refs/heads/gh-pages
-      #     rm -rf *
-      #     mv ../docs/* .
-      #     git add .
-      #     git commit -m "deploy ${GITHUB_SHA} to gh-pages"
-      #     git push --force --set-upstream origin gh-pages
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./docs/book
+        run: |
+          git worktree add gh-pages
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          cd gh-pages
+          git update-ref -d refs/heads/gh-pages
+          rm -rf *
+          mv ../docs/* .
+          git add .
+          git commit -m "deploy ${GITHUB_SHA} to gh-pages"
+          git push --force --set-upstream origin gh-pages
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: ./docs/book
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
