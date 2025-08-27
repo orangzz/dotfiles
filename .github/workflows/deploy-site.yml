@@ -37,9 +37,9 @@ jobs:
           cd gh-pages
           git update-ref -d refs/heads/gh-pages
           rm -rf *
-          mv ../docs/* .
+          mv ../docs/book/* .
           git add .
-          git commit -m "deploy %GITHUB_SHA to gh-pages"
+          git commit -m "deploy ${GITHUB_SHA} to gh-pages"
           git push --force --set-upstream origin gh-pages
       # - name: Deploy site to Github Page
       #   uses: peaceiris/actions-gh-pages@v3
